@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Feedback Form | BOXOPROMPT</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div class="page-shell">
+		<header class="topbar">
+			<a class="brand-mark" href="index.html">BOXOPROMPT</a>
+			<nav class="menu" aria-label="Primary">
+				<a href="feedback_entry.html" class="btn btn-secondary">Back</a>
+				<a href="downloads.html" class="btn btn-secondary">Downloads</a>
+			</nav>
+		</header>
+
+		<main>
+			<section class="page-hero">
+				<p class="page-kicker">Feedback Form</p>
+				<h1 class="page-title">Tell me what is working and what is not.</h1>
+				<p class="page-description">Bug reports, feature requests, and general feedback all help improve the next release of BOXOPROMPT.</p>
+			</section>
+
+			<section class="form-card">
+				<h2>Send feedback</h2>
+				<p class="form-intro">Fill out the form below and your message will be sent directly through EmailJS.</p>
+
+				<form id="feedback-form">
+					<div>
+						<label for="name">Name</label>
+						<input type="text" id="name" name="user_name" placeholder="Your name" required>
+					</div>
+
+					<div>
+						<label for="email">Email</label>
+						<input type="email" id="email" name="user_email" placeholder="you@example.com" required>
+					</div>
+
+					<div>
+						<label for="message">Message</label>
+						<textarea id="message" name="message" rows="6" placeholder="Share the bug, idea, or feedback here." required></textarea>
+					</div>
+
+					<div class="cta-row">
+						<button type="submit" class="btn btn-primary">Send feedback</button>
+					</div>
+				</form>
+
+				<div id="success-message">Feedback sent successfully.</div>
+			</section>
+		</main>
+	</div>
+
+	<script src="js/email.min.js"></script>
+	<script>
+		emailjs.init("uQWkPNf7xLi-JtUia");
+
+		const form = document.getElementById('feedback-form');
+		const successMessage = document.getElementById('success-message');
+
+		form.addEventListener('submit', function(e) {
+			e.preventDefault();
+
+			const templateParams = {
+				user_name: document.getElementById('name').value,
+				user_email: document.getElementById('email').value,
+				message: document.getElementById('message').value
+			};
+
+			emailjs.send('service_9eni5pg', 'template_yghntzj', templateParams)
+				.then(function() {
+					successMessage.classList.add('show');
+					form.reset();
+					setTimeout(function() {
+						successMessage.classList.remove('show');
+					}, 4000);
+				}, function() {
+					alert('Failed to send feedback. Please try again later.');
+				});
+		});
+	</script>
+</body>
+</html>
